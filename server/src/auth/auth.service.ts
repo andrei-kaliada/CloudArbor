@@ -1,55 +1,43 @@
-import {
-  ForbiddenException,
-  Injectable,
-  UnauthorizedException,
-} from '@nestjs/common'
+import { ForbiddenException, Injectable } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
-import { CreateUserDto } from 'src/users/dto/create-user.dto'
-import { UserEntity } from 'src/users/entities/user.entity'
-import { UsersService } from 'src/users/users.service'
+import { CreateUserDto } from '../users/dto/create-user.dto'
+import { UserEntity } from '../users/entities/user.entity'
+import { UsersService } from '../users/users.service'
 
 @Injectable()
 export class AuthService {
   constructor(
-    private userService: UsersService,
-    private jwtService: JwtService
+    private usersService: UsersService,
+    private jwtService: JwtService,
   ) {}
 
   async validateUser(email: string, password: string): Promise<any> {
-    const user = await this.userService.findByEmail(email)
+    const user = await this.usersService.findByEmail(email);
+
     if (user && user.password === password) {
-      const { password, ...rest } = user
-			const payload = {sub: rest.id, username: rest.fullName}
-      return {access_token: await this.jwtService.signAsync(payload)}
+      const { password, ...result } = user;
+      return result;
     }
 
-    return null
+    return null;
   }
 
-  async registration(userDto: CreateUserDto) {
+  async register(dto: CreateUserDto) {
     try {
-      const findUser = await this.userService.findByEmail(userDto.email)
+      const userData = await this.usersService.create(dto);
 
-      if (findUser) {
-        throw new UnauthorizedException(
-          `User with email ${findUser.email} already exists`
-        )
-      }
-
-      const user = await this.userService.createUser(userDto)
-
-      const payload = { sub: user.id, username: user.fullName }
-      return { access_token:this.jwtService.sign(payload) }
-    } catch (error) {
-      throw new ForbiddenException(`${error}`)
+      return {
+        token: this.jwtService.sign({ id: userData.id }),
+      };
+    } catch (err) {
+      console.log(err);
+      throw new ForbiddenException('Register failed');
     }
   }
 
-	async login(user: UserEntity){
-		const payload = {id: user.id}
-
-		return {
-			access_token: this.jwtService.sign(payload)
-		}
-	}
+  async login(user: UserEntity) {
+    return {
+      token: this.jwtService.sign({ id: user.id }),
+    };
+  }
 }

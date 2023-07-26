@@ -5,23 +5,26 @@ import { join } from 'path'
 import { AppModule } from './app.module'
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, { cors: false })
+  const app = await NestFactory.create(AppModule, { cors: false });
+
+  app.enableCors({ credentials: true, origin: true });
+
+  app.use('/uploads', express.static(join(__dirname, '..', 'uploads')));
 
   const config = new DocumentBuilder()
     .setTitle('Cloud Arbor')
-    .addBearerAuth()
     .setVersion('1.0')
-    .build()
+    .addBearerAuth()
+    .build();
 
-  app.use('/uploads', express.static(join(__dirname, '..', 'uploads')))
+  const document = SwaggerModule.createDocument(app, config);
 
-  app.setGlobalPrefix('api')
-  const document = SwaggerModule.createDocument(app, config)
-  SwaggerModule.setup('swagger', app, document, { 
+  SwaggerModule.setup('swagger', app, document, {
     swaggerOptions: {
       persistAuthorization: true,
-  }
-})
-  await app.listen(4200)
+    },
+  });
+
+  await app.listen(4200);
 }
-bootstrap()
+bootstrap();

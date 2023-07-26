@@ -1,19 +1,26 @@
 import {
   Controller,
-  FileTypeValidator,
+  Delete,
   Get,
   MaxFileSizeValidator,
   ParseFilePipe,
   Post,
+  Query,
   UploadedFile,
   UseGuards,
-  UseInterceptors,
+  UseInterceptors
 } from '@nestjs/common'
 import { FileInterceptor } from '@nestjs/platform-express'
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger'
-import { JwtAuthGuard } from 'src/auth/guards/jwt.guards'
+import { JwtAuthGuard } from 'src/auth/guards/jwt.guard'
+import { UserId } from 'src/decorators/user-id.decorator'
 import { FilesService } from './files.service'
 import { fileStorage } from './storage'
+
+export enum FileType {
+  PHOTOS = 'photos',
+  TRASH = 'trash',
+}
 
 @Controller('files')
 @ApiTags('files')
@@ -23,8 +30,8 @@ export class FilesController {
   constructor(private readonly filesService: FilesService) {}
 
   @Get()
-  getAllFiles() {
-    return this.filesService.findAll()
+  getAllFiles(@UserId() userId: number, @Query('type') fileType: FileType) {
+    return this.filesService.findAll(userId, fileType)
   }
 
   @Post()
@@ -50,15 +57,17 @@ export class FilesController {
       new ParseFilePipe({
         validators: [
           new MaxFileSizeValidator({ maxSize: 1024 * 1024 * 5 }),
-          new FileTypeValidator({ fileType: 'image/jpeg' }),
-          new FileTypeValidator({ fileType: 'image/png' }),
-          new FileTypeValidator({ fileType: 'image/webp' }),
-          new FileTypeValidator({ fileType: 'image/jpg' }),
         ],
       })
     )
-    file: Express.Multer.File
+    file: Express.Multer.File,
+    @UserId() userId: number
   ) {
-    return file
+    return this.filesService.create(file, userId)
+  }
+
+  @Delete()
+  deleteFile(@UserId() userId: number, @Query('id') filesId: string) {
+    return this.filesService.delete(userId, filesId)
   }
 }

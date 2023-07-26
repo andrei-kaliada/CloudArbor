@@ -1,5 +1,11 @@
-import { Controller, Get, Request } from '@nestjs/common'
+import {
+  Controller,
+  Get,
+  UseGuards
+} from '@nestjs/common'
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
+import { JwtAuthGuard } from '../auth/guards/jwt.guard'
+import { UserId } from '../decorators/user-id.decorator'
 import { UsersService } from './users.service'
 
 @Controller('users')
@@ -7,12 +13,10 @@ import { UsersService } from './users.service'
 @ApiBearerAuth()
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
-  
-  // @UseGuards(JwtAuthGuard)
+
   @Get('/me')
-  async getMe(@Request() req){
-   console.log('req:', req.user);
-   return req.user;
+  @UseGuards(JwtAuthGuard)
+  getMe(@UserId() id: number) {
+    return this.usersService.findById(id);
   }
-  
 }
