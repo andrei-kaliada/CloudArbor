@@ -3,7 +3,7 @@ import { ApiBody } from '@nestjs/swagger'
 import { CreateUserDto } from '../users/dto/create-user.dto'
 import { UserEntity } from '../users/entities/user.entity'
 import { AuthService } from './auth.service'
-import { LocalAuthGuard } from './guards/local.guard'
+import { LocalAuthGuard } from './guards/local.guards'
 
 @Controller('auth')
 export class AuthController {

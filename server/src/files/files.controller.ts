@@ -1,18 +1,18 @@
 import {
-  Controller,
-  Delete,
-  Get,
-  MaxFileSizeValidator,
-  ParseFilePipe,
-  Post,
-  Query,
-  UploadedFile,
-  UseGuards,
-  UseInterceptors,
+	Controller,
+	Delete,
+	Get,
+	MaxFileSizeValidator,
+	ParseFilePipe,
+	Post,
+	Query,
+	UploadedFile,
+	UseGuards,
+	UseInterceptors,
 } from '@nestjs/common'
 import { FileInterceptor } from '@nestjs/platform-express'
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger'
-import { JwtAuthGuard } from 'src/auth/guards/jwt.guard'
+import { JwtAuthGuard } from 'src/auth/guards/jwt.guards'
 import { UserId } from 'src/decorators/user-id.decorator'
 import { FilesService } from './files.service'
 import { fileStorage } from './storage'
