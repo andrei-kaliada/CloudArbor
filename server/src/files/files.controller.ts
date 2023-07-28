@@ -8,7 +8,7 @@ import {
   Query,
   UploadedFile,
   UseGuards,
-  UseInterceptors
+  UseInterceptors,
 } from '@nestjs/common'
 import { FileInterceptor } from '@nestjs/platform-express'
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger'
@@ -55,9 +55,7 @@ export class FilesController {
   uploadFile(
     @UploadedFile(
       new ParseFilePipe({
-        validators: [
-          new MaxFileSizeValidator({ maxSize: 1024 * 1024 * 5 }),
-        ],
+        validators: [new MaxFileSizeValidator({ maxSize: 1024 * 1024 * 5 })],
       })
     )
     file: Express.Multer.File,

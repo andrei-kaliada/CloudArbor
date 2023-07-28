@@ -13,11 +13,11 @@ export class AuthController {
   @Post('login')
   @ApiBody({ type: CreateUserDto })
   async login(@Request() req) {
-    return this.authService.login(req.user as UserEntity);
+    return this.authService.login(req.user as UserEntity)
   }
 
   @Post('/register')
   register(@Body() dto: CreateUserDto) {
-    return this.authService.register(dto);
+    return this.authService.register(dto)
   }
 }

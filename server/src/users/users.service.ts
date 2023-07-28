@@ -8,22 +8,22 @@ import { UserEntity } from './entities/user.entity'
 export class UsersService {
   constructor(
     @InjectRepository(UserEntity)
-    private repository: Repository<UserEntity>,
+    private repository: Repository<UserEntity>
   ) {}
 
   async findByEmail(email: string) {
     return this.repository.findOneBy({
       email,
-    });
+    })
   }
 
   async findById(id: number) {
     return this.repository.findOneBy({
       id,
-    });
+    })
   }
 
   async create(dto: CreateUserDto) {
-    return this.repository.save(dto);
+    return this.repository.save(dto)
   }
 }

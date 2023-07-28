@@ -17,7 +17,7 @@ import { LocalStrategy } from './strategies/local.strategy'
         return {
           secret: configService.get('SECRET_KEY'),
           signOptions: { expiresIn: configService.get('EXPIRES_IN') },
-        };
+        }
       },
     }),
     UsersModule,

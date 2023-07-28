@@ -4,15 +4,15 @@ export class CreateUserDto {
   @ApiProperty({
     default: 'test@mail.com',
   })
-  email: string;
+  email: string
 
   @ApiProperty({
     default: 'Alan Wake',
   })
-  fullName: string;
+  fullName: string
 
   @ApiProperty({
     default: '123456',
   })
-  password: string;
+  password: string
 }

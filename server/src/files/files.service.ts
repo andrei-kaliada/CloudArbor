@@ -16,38 +16,38 @@ export class FilesService {
 
     qb.where('file.userId = :userId', { userId })
 
-    if(fileType === FileType.PHOTOS){
-      qb.andWhere('file.mimetype LIKE :type', { type: '%image%'})
+    if (fileType === FileType.PHOTOS) {
+      qb.andWhere('file.mimetype LIKE :type', { type: '%image%' })
     }
 
-    if(fileType === FileType.TRASH){
+    if (fileType === FileType.TRASH) {
       qb.withDeleted().andWhere('file.deletedAt IS NOT NULL')
     }
 
-    return qb.getMany();
+    return qb.getMany()
   }
 
-  async create(file: Express.Multer.File, userId: number){
-    const { filename, originalname, size, mimetype } = file;
+  async create(file: Express.Multer.File, userId: number) {
+    const { filename, originalname, size, mimetype } = file
     return this.repository.save({
       filename,
       originalName: originalname,
       size,
       mimetype,
-      user: { id: userId}
+      user: { id: userId },
     })
   }
 
-  async delete(userId: number, filesId: string){
-    const ids = filesId.split(',');
+  async delete(userId: number, filesId: string) {
+    const ids = filesId.split(',')
 
     const qb = this.repository.createQueryBuilder('file')
 
     qb.where('id IN (:...ids) AND userId = :userId', {
       ids,
-      userId
+      userId,
     })
 
-    return qb.softDelete().execute();
+    return qb.softDelete().execute()
   }
 }

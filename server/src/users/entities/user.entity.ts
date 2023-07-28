@@ -4,17 +4,17 @@ import { FileEntity } from '../../files/entities/file.entity'
 @Entity('users')
 export class UserEntity {
   @PrimaryGeneratedColumn()
-  id: number;
+  id: number
 
   @Column()
-  email: string;
+  email: string
 
   @Column()
-  password: string;
+  password: string
 
   @Column()
-  fullName: string;
+  fullName: string
 
   @OneToMany(() => FileEntity, (file) => file.user)
-  files: FileEntity[];
+  files: FileEntity[]
 }

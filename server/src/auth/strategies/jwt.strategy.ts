@@ -10,18 +10,18 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
       secretOrKey: process.env.SECRET_KEY,
-    });
+    })
   }
 
   async validate(payload: { id: string }) {
-    const user = await this.userService.findById(+payload.id);
+    const user = await this.userService.findById(+payload.id)
 
     if (!user) {
-      throw new UnauthorizedException('You have no access');
+      throw new UnauthorizedException('You have no access')
     }
 
     return {
       id: user.id,
-    };
+    }
   }
 }
