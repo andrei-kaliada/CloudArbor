@@ -1,4 +1,5 @@
 import { axios } from '@/core/axios'
+import { destroyCookie } from 'nookies'
 import {
   AuthResponseDTO,
   IUser,
@@ -20,4 +21,8 @@ export const register = async (
 
 export const getMe = async (): Promise<IUser> => {
   return (await axios.get('/users/me')).data
+}
+
+export const logout = () => {
+  destroyCookie(null, '_token', { path: '/' })
 }

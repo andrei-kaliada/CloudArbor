@@ -1,9 +1,9 @@
 import * as Auth from '@/api'
+import { IRegistrationForm } from '@/interfaces/Auth.interface'
 import { Button, Form, Input, notification } from 'antd'
 import { AxiosError } from 'axios'
 import { useRouter } from 'next/router'
 import { setCookie } from 'nookies'
-import { IRegistrationForm } from './Auth.interface'
 import style from './Auth.module.scss'
 
 const RegisterForm = () => {
@@ -11,7 +11,7 @@ const RegisterForm = () => {
 
   const onFinish = async (value: IRegistrationForm) => {
     try {
-      const { token } = await Auth.auth.register(value)
+      const { token } = await Auth.register(value)
       notification.success({
         message: 'Registration Success',
         description: 'User was registered successfully',

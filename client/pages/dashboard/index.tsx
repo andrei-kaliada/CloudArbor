@@ -4,11 +4,11 @@ import { checkAuth } from '@/utils/checkAuth'
 import { GetServerSidePropsContext } from 'next'
 
 const DashBoardPage = () => {
-  return (
-    <LayoutWrapper>
-      <Dashboard />
-    </LayoutWrapper>
-  )
+  return <Dashboard />
+}
+
+DashBoardPage.getLayout = (page: React.ReactNode) => {
+  return <LayoutWrapper title={'Dashboard'}>{page}</LayoutWrapper>
 }
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {

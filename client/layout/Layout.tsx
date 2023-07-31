@@ -1,15 +1,22 @@
 import ContentComponent from '@/components/Content/Content'
 import FooterComponent from '@/components/Footer/Footer'
 import HeaderComponent from '@/components/Header/Header'
-import React, { FC } from 'react'
+import Head from 'next/head'
+import { FC, PropsWithChildren } from 'react'
 
 interface ILayoutWrapper {
-  children: React.ReactElement
+  title: string
 }
 
-const LayoutWrapper: FC<ILayoutWrapper> = ({ children }) => {
+const LayoutWrapper: FC<PropsWithChildren<ILayoutWrapper>> = ({
+  children,
+  title,
+}) => {
   return (
     <div>
+      <Head>
+        <title>{title}</title>
+      </Head>
       <HeaderComponent />
       <ContentComponent>{children}</ContentComponent>
       <FooterComponent />

@@ -1,14 +1,20 @@
 import { CloudOutlined } from '@ant-design/icons'
-import { Layout, Menu } from 'antd'
+import { Avatar, Button, Layout, Menu, Popover } from 'antd'
 import { useRouter } from 'next/router'
+import { destroyCookie } from 'nookies'
 import styles from './Header.module.scss'
 
 const { Header } = Layout
 
 const HeaderComponent = () => {
   const router = useRouter()
-  const selectedMenu = router.pathname;
-
+  const selectedMenu = router.pathname
+  const onLogOut = async () => {
+    if (window.confirm('Are you sure you want to log out?')) {
+      destroyCookie(null, '_token', { path: '/' })
+      location.href = '/'
+    }
+  }
 
   return (
     <div>
@@ -17,26 +23,46 @@ const HeaderComponent = () => {
           <div className={styles.headerInner}>
             <div className={styles.headerLeft}>
               <h2>
-              <CloudOutlined />
-              CloudArbor
+                <CloudOutlined />
+                CloudArbor
               </h2>
+              <Menu
+                theme="dark"
+                mode="horizontal"
+                defaultSelectedKeys={[selectedMenu]}
+                onSelect={({ key }) => router.push(key)}
+                items={[
+                  {
+                    key: '/',
+                    label: 'Home',
+                  },
+                  {
+                    key: '/dashboard',
+                    label: 'Dashboard',
+                  },
+                ]}
+              />
             </div>
-            <Menu
-              theme="dark"
-              mode="horizontal"
-              defaultSelectedKeys={[selectedMenu]}
-              onSelect={({key}) => router.push(key)}
-              items={[
-                {
-                  key: '/',
-                  label: 'Home',
-                },
-                {
-                  key: '/dashboard',
-                  label: 'Dashboard',
-                },
-              ]}
-            />
+            <div className={styles.headerRight}>
+              <Popover
+                content={
+                  <div className={styles.popButtons}>
+                    <Button
+                      onClick={() => router.push('/dashboard/profile')}
+                      type="primary"
+                    >
+                      Profile
+                    </Button>
+                    <Button onClick={onLogOut} type="primary" danger>
+                      Log out
+                    </Button>
+                  </div>
+                }
+                trigger="click"
+              >
+                <Avatar>A</Avatar>
+              </Popover>
+            </div>
           </div>
         </Header>
       </Layout>

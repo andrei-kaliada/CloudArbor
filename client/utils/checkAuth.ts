@@ -9,9 +9,9 @@ export const checkAuth = async (ctx: GetServerSidePropsContext) => {
   axios.defaults.headers.Authorization = `Bearer ${_token}`
 
   try {
-    const data = await Auth.auth.getMe()
+    const userData = await Auth.getMe()
     return {
-      props: {},
+      props: userData,
     }
   } catch (error) {
     return {

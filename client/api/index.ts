@@ -1,1 +1,2 @@
-export * as auth from './auth'
+export { getMe, loginAuth, logout, register } from './auth'
+export { uploadFile } from './file'

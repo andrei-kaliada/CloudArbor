@@ -1,10 +1,10 @@
-import * as Auth from '@/api'
+import { loginAuth } from '@/api'
+import { ILoginForm } from '@/interfaces/Auth.interface'
 import { Button, Form, Input, notification } from 'antd'
 import { AxiosError } from 'axios'
 import { useRouter } from 'next/router'
 import { setCookie } from 'nookies'
 import { FC } from 'react'
-import { ILoginForm } from './Auth.interface'
 import style from './Auth.module.scss'
 
 const LoginForm: FC = () => {
@@ -12,7 +12,7 @@ const LoginForm: FC = () => {
 
   const onFinish = async (values: ILoginForm) => {
     try {
-      const { token } = await Auth.auth.loginAuth(values)
+      const { token } = await loginAuth(values)
       notification.success({
         message: 'Successful!',
         description: 'User was authorized',

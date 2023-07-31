@@ -4,7 +4,7 @@ import { FC } from 'react'
 
 const AuthPage: FC = () => {
   return (
-    <LayoutWrapper>
+    <LayoutWrapper title={'Authorization'}>
       <AuthLayout />
     </LayoutWrapper>
   )
