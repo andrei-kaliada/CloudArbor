@@ -35,3 +35,9 @@
   display: grid;
   grid-template-columns: 0.3fr 1fr;
 }
+
+.rightPanel {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}

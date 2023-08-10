@@ -1,5 +1,6 @@
 import { CloudOutlined } from '@ant-design/icons'
-import { Avatar, Button, Layout, Menu, Popover } from 'antd'
+import { Avatar, Button, Layout, Popover } from 'antd'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { destroyCookie } from 'nookies'
 import styles from './Header.module.scss'
@@ -22,28 +23,22 @@ const HeaderComponent = () => {
         <Header className={styles.root}>
           <div className={styles.headerInner}>
             <div className={styles.headerLeft}>
-              <h2>
-                <CloudOutlined />
-                CloudArbor
-              </h2>
-              <Menu
-                theme="dark"
-                mode="horizontal"
-                defaultSelectedKeys={[selectedMenu]}
-                onSelect={({ key }) => router.push(key)}
-                items={[
-                  {
-                    key: '/',
-                    label: 'Home',
-                  },
-                  {
-                    key: '/dashboard',
-                    label: 'Dashboard',
-                  },
-                ]}
-              />
+              <Link href={'/'}>
+                <h2>
+                  <CloudOutlined />
+                  CloudArbor
+                </h2>
+              </Link>
+            </div>
+            <div>
+              <Link href={'/dashboard'}>Dashboard</Link>
             </div>
             <div className={styles.headerRight}>
+            <Button> 
+            <Link href={'/dashboard/auth'}>
+                Log In
+              </Link>
+            </Button>
               <Popover
                 content={
                   <div className={styles.popButtons}>

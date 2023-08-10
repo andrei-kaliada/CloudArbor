@@ -1,10 +1,18 @@
+import { getAllFiles } from '@/api'
+import { FileDto } from '@/api/dto/files.dto'
 import Dashboard from '@/layout/Dashboard/Dashboard'
 import LayoutWrapper from '@/layout/Layout'
 import { checkAuth } from '@/utils/checkAuth'
-import { GetServerSidePropsContext } from 'next'
+import { GetServerSidePropsContext, NextPage } from 'next'
 
-const DashBoardPage = () => {
-  return <Dashboard />
+interface IProps {
+	files: FileDto[]
+}
+
+const DashBoardPage: NextPage<IProps> & {
+  getLayout?: (page: React.ReactNode) => React.ReactNode;
+} = ({ files }) => {
+  return <Dashboard files={files} />
 }
 
 DashBoardPage.getLayout = (page: React.ReactNode) => {
@@ -18,9 +26,21 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     return authData
   }
 
-  return {
-    props: {},
-  }
+  const files = await getAllFiles()
+
+	if(files) {
+		return {
+			props: {
+				files
+			}
+		}
+	} else {
+		return {
+			props: {
+				files: []
+			}
+		}
+	}
 }
 
 export default DashBoardPage

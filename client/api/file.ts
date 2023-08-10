@@ -3,12 +3,32 @@ import { FileDto } from './dto/files.dto'
 
 type FileType = 'all' | 'photos' | 'files'
 
-export const getAll = async (type: FileType = 'all'): Promise<FileDto[]> => {
+export const getAllFiles = async (type: FileType = 'all'): Promise<FileDto[]> => {
   return (await axios.get(`/files?type=${type}`)).data
 }
 
-export const uploadFile = async (file: FileDto): Promise<FileDto> => {
-  return (await axios.post('/files', file)).data
+export const uploadFile = async (options: any) => {
+  const { onError, onSuccess, onProgress, file } = options
+  const formData = new FormData()
+
+  formData.append('file', file)
+
+  const config = {
+    headers: { 'Content-Type': 'multipart/form-data' },
+    onProgress: (event: ProgressEvent) => {
+      onProgress({ percent: (event.loaded / event.total) * 100 })
+    },
+  }
+
+  try {
+    const data = (await axios.post('/files', formData, config)).data
+
+    onSuccess()
+
+    return data
+  } catch (error) {
+    onError({error})
+  }
 }
 
 export const deleteFile = async (filesId: number) => {

@@ -1,2 +1,5 @@
 export { getMe, loginAuth, logout, register } from './auth'
-export { uploadFile } from './file'
+export {
+	deleteFile, getAllFiles, uploadFile
+} from './file'
+

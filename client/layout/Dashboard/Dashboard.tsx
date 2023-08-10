@@ -1,8 +1,14 @@
+import { FileDto } from '@/api/dto/files.dto'
+import FileCardList from '@/components/FileCardList/FileCardList'
 import UploadButton from '@/components/UploadButton/UploadButton'
 import styles from '@/styles/Home.module.scss'
 import { Menu } from 'antd'
+import { NextPage } from 'next'
+interface IProps {
+	files: FileDto[]
+}
 
-const Dashboard = () => {
+const Dashboard: NextPage<IProps> = ({ files }) => {
   return (
     <main className={styles.dashboardContainer}>
       <div className={styles.sidebar}>
@@ -27,9 +33,13 @@ const Dashboard = () => {
           ]}
         />
       </div>
-      <h1>DashBoardPage</h1>
+      <div className={styles.rightPanel}>
+        <FileCardList files={files} />
+      </div>
+      
     </main>
   )
 }
+
 
 export default Dashboard
